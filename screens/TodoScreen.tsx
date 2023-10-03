@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Button,
   FlatList,
@@ -12,9 +12,23 @@ import {
   View,
 } from 'react-native';
 
-export default function TodoScreen() {
+interface Todo {
+  text: string;
+  checked: boolean;
+}
+
+interface TodoScreenProps {
+  todoList: Todo[];
+  setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
+}
+
+interface TodoCheckboxProps {
+  checked: boolean;
+  onChange: (newValue: boolean) => void;
+}
+
+export default function TodoScreen({ todoList, setTodoList }: TodoScreenProps) {
   const [todoItem, setTodoItem] = React.useState<string>('');
-  const [todoList, setTodoList] = React.useState<string[]>([]);
   const [isFocused, setIsFocused] = React.useState<boolean>(false);
 
   const handleTodoItemChange = (text: any) => {
@@ -23,7 +37,7 @@ export default function TodoScreen() {
 
   const addTodoItem = () => {
     if (todoItem.trim() !== '') {
-      setTodoList([...todoList, todoItem]);
+      setTodoList([...todoList, { text: todoItem, checked: false }]);
       setTodoItem('');
     }
   };
@@ -42,12 +56,11 @@ export default function TodoScreen() {
     setTodoList(updatedList);
   };
 
-  function TodoCheckbox() {
-    const [checked, setChecked] = useState(false);
+  function TodoCheckbox({ checked, onChange }: TodoCheckboxProps) {
     return (
       <Pressable
         style={[styles.checkboxBase, checked && styles.checkboxChecked]}
-        onPress={() => setChecked(!checked)}
+        onPress={() => onChange(!checked)}
       >
         {checked && <Ionicons name='checkmark' size={24} color='white' />}
       </Pressable>
@@ -71,10 +84,17 @@ export default function TodoScreen() {
       <Button title='Add' onPress={addTodoItem} />
       <FlatList
         data={todoList}
-        renderItem={({ item, index }: { item: string; index: number }) => (
+        renderItem={({ item, index }) => (
           <View style={styles.todoItemContainer}>
-            <Text>{item}</Text>
-            <TodoCheckbox />
+            <Text>{item.text}</Text>
+            <TodoCheckbox
+              checked={item.checked}
+              onChange={(newValue: boolean) => {
+                const updatedList = [...todoList];
+                updatedList[index].checked = newValue;
+                setTodoList(updatedList);
+              }}
+            />
             <Text style={styles.checkboxLabel}></Text>
             <TouchableOpacity onPress={() => removeTodoItem(index)}>
               <Text style={styles.removeButton}>Remove</Text>
