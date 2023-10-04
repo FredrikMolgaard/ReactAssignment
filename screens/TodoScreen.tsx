@@ -1,6 +1,7 @@
 import { SimpleLineIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Checkbox from 'expo-checkbox';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Button,
   FlatList,
@@ -10,6 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { storeData } from '../components/asyncStorage';
 import { globalStyles } from '../utils/globalStyles';
 
 interface Todo {
@@ -26,13 +28,34 @@ export default function TodoScreen({ todoList, setTodoList }: TodoScreenProps) {
   const [todoItem, setTodoItem] = React.useState<string>('');
   const [isFocused, setIsFocused] = React.useState<boolean>(false);
 
+  // const [todoList, setTodoList] = useState<Todo[]>([]);
+
+  const loadTodoList = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem('my-key');
+      if (storedData !== null) {
+        const parsedData = JSON.parse(storedData);
+        setTodoList(parsedData);
+      }
+    } catch (e) {
+      // Handle error
+      console.error('Error loading todo list from AsyncStorage', e);
+    }
+  };
+
+  useEffect(() => {
+    loadTodoList(); // Load todo list from AsyncStorage when the component mounts
+  }, []);
+
   const handleTodoItemChange = (text: any) => {
     setTodoItem(text);
   };
 
   const addTodoItem = () => {
     if (todoItem.trim() !== '') {
-      setTodoList([...todoList, { text: todoItem, checked: false }]);
+      const newTodoList = [...todoList, { text: todoItem, checked: false }];
+      setTodoList(newTodoList);
+      storeData(newTodoList); // Save updated todo list to AsyncStorage
       setTodoItem('');
     }
   };
@@ -49,6 +72,7 @@ export default function TodoScreen({ todoList, setTodoList }: TodoScreenProps) {
     const updatedList = [...todoList];
     updatedList.splice(index, 1);
     setTodoList(updatedList);
+    storeData(updatedList); // Save updated todo list to AsyncStorage
   };
 
   return (
