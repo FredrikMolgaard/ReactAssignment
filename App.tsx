@@ -1,6 +1,7 @@
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
 import * as React from 'react';
 import { StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -14,16 +15,34 @@ function App() {
     { text: string; checked: boolean }[]
   >([]);
 
+  const [fontsLoaded] = useFonts({
+    Spooky: require('./assets/fonts/Spooky.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Tabs.Navigator initialRouteName='Home'>
+        <Tabs.Navigator
+          initialRouteName='Home'
+          screenOptions={{
+            tabBarStyle: { backgroundColor: 'slategray' },
+            tabBarLabelStyle: {
+              fontWeight: 'bold',
+              color: 'white',
+              fontSize: 12,
+            },
+          }}
+        >
           <Tabs.Screen
             name='Home'
             options={{
               title: 'Home',
-              tabBarIcon: (props) => (
-                <SimpleLineIcons name='home' size={24} color='black' />
+              tabBarIcon: () => (
+                <SimpleLineIcons name='home' size={30} color='white' />
               ),
             }}
           >
@@ -33,12 +52,8 @@ function App() {
             name='Todo'
             options={{
               title: 'Daily Ghoul',
-              tabBarIcon: (props) => (
-                <SimpleLineIcons
-                  size={props.size}
-                  color={props.color}
-                  name='ghost'
-                />
+              tabBarIcon: () => (
+                <SimpleLineIcons name='ghost' size={30} color='white' />
               ),
             }}
           >
@@ -46,7 +61,7 @@ function App() {
           </Tabs.Screen>
         </Tabs.Navigator>
       </NavigationContainer>
-      <StatusBar />
+      <StatusBar backgroundColor='black' />
     </SafeAreaProvider>
   );
 }

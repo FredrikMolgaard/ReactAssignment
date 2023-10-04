@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, Text, View } from 'react-native';
+import { useCustomKeepAwake } from '../hooks/useKeepAwake';
+import { globalStyles } from '../utils/globalStyles';
+import ProgressBar from '../utils/progressBar';
 
 interface HomeScreenProps {
   todoList: { text: string; checked: boolean }[];
@@ -8,6 +11,7 @@ interface HomeScreenProps {
 export default function HomeScreen({ todoList }: HomeScreenProps) {
   const [completedCount, setCompletedCount] = useState(0);
   const [uncompletedCount, setUncompletedCount] = useState(0);
+  useCustomKeepAwake();
 
   useEffect(() => {
     let completed = 0;
@@ -26,20 +30,20 @@ export default function HomeScreen({ todoList }: HomeScreenProps) {
   }, [todoList]);
 
   return (
-    <View>
-      <Text>Home</Text>
-      <Text>Total Todos: {completedCount + uncompletedCount}</Text>
-      <Text>Completed Todos: {completedCount}</Text>
-      <Text>Uncompleted Todos: {uncompletedCount}</Text>
-    </View>
+    <ImageBackground
+      source={require('../assets/spooky.jpg')}
+      style={globalStyles.backgroundImage}
+    >
+      <View style={globalStyles.container}>
+        <Text style={{ fontFamily: 'Spooky', fontSize: 30, color: 'white' }}>
+          Your Daily Ghoul
+        </Text>
+        <ProgressBar
+          total={completedCount + uncompletedCount}
+          completed={completedCount}
+          color='orange'
+        />
+      </View>
+    </ImageBackground>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    fontSize: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
