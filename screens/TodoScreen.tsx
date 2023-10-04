@@ -71,8 +71,7 @@ export default function TodoScreen({ todoList, setTodoList }: TodoScreenProps) {
       <FlatList
         data={todoList}
         renderItem={({ item, index }) => (
-          <View style={globalStyles.iconContainer}>
-            <Text>{item.text}</Text>
+          <View style={globalStyles.todoItem}>
             <Checkbox
               style={globalStyles.checkbox}
               value={item.checked}
@@ -82,6 +81,7 @@ export default function TodoScreen({ todoList, setTodoList }: TodoScreenProps) {
                 setTodoList(updatedList);
               }}
             />
+            <Text style={globalStyles.todoText}>{item.text}</Text>
             <TouchableOpacity onPress={() => removeTodoItem(index)}>
               <SimpleLineIcons name='trash' size={24} color='red' />
             </TouchableOpacity>

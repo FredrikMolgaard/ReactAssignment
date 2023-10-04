@@ -73,8 +73,24 @@ export const globalStyles = StyleSheet.create({
     marginBottom: 30,
     color: 'white',
   },
-  iconContainer: {
+  todoItem: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    justifyContent: 'space-between',
+    borderWidth: 3,
+    borderColor: '#ddd',
+  },
+  textContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  todoText: {
+    flex: 1,
+    fontSize: 20,
+    marginLeft: 10,
   },
 });
