@@ -22,28 +22,14 @@ export const globalStyles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
   },
-  removeButton: {
-    color: 'red',
-    fontWeight: 'bold',
-  },
   todoItemContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 5,
   },
-  checkboxBase: {
-    width: 24,
-    height: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: 'coral',
-    backgroundColor: 'transparent',
-  },
-  checkboxChecked: {
-    backgroundColor: 'coral',
+  checkbox: {
+    margin: 8,
   },
   appContainer: {
     flex: 1,
@@ -54,15 +40,6 @@ export const globalStyles = StyleSheet.create({
     marginVertical: 16,
     fontWeight: 'bold',
     fontSize: 24,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  checkboxLabel: {
-    marginLeft: 8,
-    fontWeight: 'bold',
-    fontSize: 18,
   },
   progressBarContainer: {
     width: '70%',
@@ -95,5 +72,9 @@ export const globalStyles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 30,
     color: 'white',
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

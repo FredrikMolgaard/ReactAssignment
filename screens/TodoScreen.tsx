@@ -1,9 +1,9 @@
-import { Ionicons } from '@expo/vector-icons';
+import { SimpleLineIcons } from '@expo/vector-icons';
+import Checkbox from 'expo-checkbox';
 import React from 'react';
 import {
   Button,
   FlatList,
-  Pressable,
   SafeAreaView,
   Text,
   TextInput,
@@ -56,25 +56,8 @@ export default function TodoScreen({ todoList, setTodoList }: TodoScreenProps) {
     setTodoList(updatedList);
   };
 
-  function TodoCheckbox({ checked, onChange }: TodoCheckboxProps) {
-    return (
-      <Pressable
-        style={[
-          globalStyles.checkboxBase,
-          checked && globalStyles.checkboxChecked,
-        ]}
-        onPress={() => onChange(!checked)}
-      >
-        {checked && <Ionicons name='checkmark' size={24} color='white' />}
-      </Pressable>
-    );
-  }
-
   return (
     <SafeAreaView>
-      <View style={globalStyles.container}>
-        <Text style={globalStyles.text}>Today's tasks</Text>
-      </View>
       <TextInput
         style={globalStyles.input}
         placeholder={isFocused ? '' : 'Add todo here'}
@@ -88,19 +71,19 @@ export default function TodoScreen({ todoList, setTodoList }: TodoScreenProps) {
       <FlatList
         data={todoList}
         renderItem={({ item, index }) => (
-          <View style={globalStyles.todoItemContainer}>
+          <View style={globalStyles.iconContainer}>
             <Text>{item.text}</Text>
-            <TodoCheckbox
-              checked={item.checked}
-              onChange={(newValue: boolean) => {
+            <Checkbox
+              style={globalStyles.checkbox}
+              value={item.checked}
+              onValueChange={(newValue: boolean) => {
                 const updatedList = [...todoList];
                 updatedList[index].checked = newValue;
                 setTodoList(updatedList);
               }}
             />
-            <Text style={globalStyles.checkboxLabel}></Text>
             <TouchableOpacity onPress={() => removeTodoItem(index)}>
-              <Text style={globalStyles.removeButton}>Remove</Text>
+              <SimpleLineIcons name='trash' size={24} color='red' />
             </TouchableOpacity>
           </View>
         )}
