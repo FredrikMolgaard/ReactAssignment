@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ImageBackground, Text, View } from 'react-native';
+import ProgressBar from '../components/progressBar';
 import { useCustomKeepAwake } from '../hooks/useKeepAwake';
 import { globalStyles } from '../utils/globalStyles';
-import ProgressBar from '../utils/progressBar';
 
 interface HomeScreenProps {
   todoList: { text: string; checked: boolean }[];

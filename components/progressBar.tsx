@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { globalStyles } from './globalStyles';
+import { globalStyles } from '../utils/globalStyles';
 
 interface ProgressBarProps {
   total: number;

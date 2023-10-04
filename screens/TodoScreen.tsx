@@ -22,11 +22,6 @@ interface TodoScreenProps {
   setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
 }
 
-interface TodoCheckboxProps {
-  checked: boolean;
-  onChange: (newValue: boolean) => void;
-}
-
 export default function TodoScreen({ todoList, setTodoList }: TodoScreenProps) {
   const [todoItem, setTodoItem] = React.useState<string>('');
   const [isFocused, setIsFocused] = React.useState<boolean>(false);
