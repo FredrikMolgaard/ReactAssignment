@@ -22,12 +22,6 @@ export const globalStyles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
   },
-  todoItemContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
   checkbox: {
     margin: 8,
   },
@@ -72,6 +66,12 @@ export const globalStyles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 30,
     color: 'white',
+  },
+  todoItemContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 5,
   },
   todoItem: {
     flexDirection: 'row',

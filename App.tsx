@@ -1,9 +1,10 @@
 import { SimpleLineIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import * as React from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, Text } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import HomeScreen from './screens/HomeScreen';
 import TodoScreen from './screens/TodoScreen';
@@ -14,6 +15,22 @@ function App() {
   const [todoList, setTodoList] = React.useState<
     { text: string; checked: boolean }[]
   >([]);
+
+  const loadTodoList = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem('my-key');
+      if (storedData !== null) {
+        const parsedData = JSON.parse(storedData);
+        setTodoList(parsedData);
+      }
+    } catch (e) {
+      console.error('Error loading todo list from AsyncStorage', e);
+    }
+  };
+
+  React.useEffect(() => {
+    loadTodoList();
+  }, []);
 
   const [fontsLoaded] = useFonts({
     Spooky: require('./assets/fonts/Spooky.ttf'),
@@ -29,7 +46,7 @@ function App() {
         <Tabs.Navigator
           initialRouteName='Home'
           screenOptions={{
-            tabBarStyle: { backgroundColor: 'slategray' },
+            tabBarStyle: { backgroundColor: 'darkgray' },
             tabBarLabelStyle: {
               fontWeight: 'bold',
               color: 'white',
@@ -41,9 +58,11 @@ function App() {
             name='Home'
             options={{
               title: 'Home',
+              tabBarActiveBackgroundColor: 'gray',
               tabBarIcon: () => (
                 <SimpleLineIcons name='home' size={30} color='white' />
               ),
+              tabBarLabel: 'Home',
             }}
           >
             {() => <HomeScreen todoList={todoList} />}
@@ -52,6 +71,7 @@ function App() {
             name='Todo'
             options={{
               title: 'Daily Ghoul',
+              tabBarActiveBackgroundColor: 'gray',
               tabBarIcon: () => (
                 <SimpleLineIcons name='ghost' size={30} color='white' />
               ),

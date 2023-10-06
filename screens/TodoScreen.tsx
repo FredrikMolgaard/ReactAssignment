@@ -1,7 +1,6 @@
 import { SimpleLineIcons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Checkbox from 'expo-checkbox';
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Button,
   FlatList,
@@ -28,26 +27,7 @@ export default function TodoScreen({ todoList, setTodoList }: TodoScreenProps) {
   const [todoItem, setTodoItem] = React.useState<string>('');
   const [isFocused, setIsFocused] = React.useState<boolean>(false);
 
-  // const [todoList, setTodoList] = useState<Todo[]>([]);
-
-  const loadTodoList = async () => {
-    try {
-      const storedData = await AsyncStorage.getItem('my-key');
-      if (storedData !== null) {
-        const parsedData = JSON.parse(storedData);
-        setTodoList(parsedData);
-      }
-    } catch (e) {
-      // Handle error
-      console.error('Error loading todo list from AsyncStorage', e);
-    }
-  };
-
-  useEffect(() => {
-    loadTodoList(); // Load todo list from AsyncStorage when the component mounts
-  }, []);
-
-  const handleTodoItemChange = (text: any) => {
+  const handleTodoItemChange = (text: string) => {
     setTodoItem(text);
   };
 
@@ -55,7 +35,7 @@ export default function TodoScreen({ todoList, setTodoList }: TodoScreenProps) {
     if (todoItem.trim() !== '') {
       const newTodoList = [...todoList, { text: todoItem, checked: false }];
       setTodoList(newTodoList);
-      storeData(newTodoList); // Save updated todo list to AsyncStorage
+      storeData(newTodoList);
       setTodoItem('');
     }
   };
@@ -72,14 +52,14 @@ export default function TodoScreen({ todoList, setTodoList }: TodoScreenProps) {
     const updatedList = [...todoList];
     updatedList.splice(index, 1);
     setTodoList(updatedList);
-    storeData(updatedList); // Save updated todo list to AsyncStorage
+    storeData(updatedList);
   };
 
   return (
     <SafeAreaView>
       <TextInput
         style={globalStyles.input}
-        placeholder={isFocused ? '' : 'Add todo here'}
+        placeholder={isFocused ? '' : 'Add daily ghouls here'}
         placeholderTextColor='gray'
         value={todoItem}
         onChangeText={handleTodoItemChange}
@@ -95,9 +75,11 @@ export default function TodoScreen({ todoList, setTodoList }: TodoScreenProps) {
               style={globalStyles.checkbox}
               value={item.checked}
               onValueChange={(newValue: boolean) => {
-                const updatedList = [...todoList];
-                updatedList[index].checked = newValue;
+                const updatedList = todoList.map((todo, i) =>
+                  i === index ? { ...todo, checked: newValue } : todo
+                );
                 setTodoList(updatedList);
+                storeData(updatedList);
               }}
             />
             <Text style={globalStyles.todoText}>{item.text}</Text>
