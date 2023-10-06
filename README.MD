@@ -54,3 +54,6 @@ Bygga projekt:
 - npx expo install expo-keep-awake
 - npx expo install expo-font
 - npx expo install expo-checkbox
+
+GitHub repo:
+https://github.com/FredrikMolgaard/ReactAssignment
